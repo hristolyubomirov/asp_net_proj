@@ -1,0 +1,43 @@
+@page
+@model CandyShopp.Pages.Products.DetailsModel
+@{
+    ViewData["Title"] = Model.Product.Name;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(Model.Product.ImageUrl))
+            {
+                <img src="@Model.Product.ImageUrl" class="img-fluid rounded" alt="@Model.Product.Name">
+            }
+            else
+            {
+                <div style="height: 400px;">
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            <h1>@Model.Product.Name</h1>
+            <p class="lead">@Model.Product.Description</p>
+            <p class="h3 text-primary mb-4">@Model.Product.Price.ToString("N2") лв.</p>
+            
+            <form method="post" class="mb-4">
+                <input type="hidden" asp-for="Product.Id" />
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Количество:</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" style="width: 100px;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-shopping-cart"></i> Добави в количката
+                </button>
+            </form>
+
+            <div class="mt-4">
+                <a asp-page="./Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад към продуктите
+                </a>
+            </div>
+        </div>
+    </div>
+</div> 

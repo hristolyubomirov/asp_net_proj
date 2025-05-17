@@ -1,0 +1,84 @@
+@page
+@model CandyShopp.Pages.Cart.IndexModel
+@{
+    ViewData["Title"] = "Количка";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    @if (!Model.CartItems.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-shopping-cart"></i> Вашата количка е празна.
+            <a asp-page="/Products/Index" class="alert-link">Разгледайте нашите продукти</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Продукт</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                        <th>Общо</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrEmpty(item.Product.ImageUrl))
+                                    {
+                                        <img src="@item.Product.ImageUrl" alt="@item.Product.Name" style="width: 50px; height: 50px; object-fit: cover;" class="me-3">
+                                    }
+                                    <div>
+                                        <h6 class="mb-0">@item.Product.Name</h6>
+                                        <small class="text-muted">@item.Product.Description</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@item.Product.Price.ToString("N2") лв.</td>
+                            <td>
+                                <form method="post" class="d-flex align-items-center" style="max-width: 150px;">
+                                    <input type="hidden" name="productId" value="@item.ProductId" />
+                                    <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control form-control-sm me-2" onchange="this.form.submit()" />
+                                </form>
+                            </td>
+                            <td>@item.TotalPrice.ToString("N2") лв.</td>
+                            <td>
+                                <form method="post" asp-page-handler="Remove" class="d-inline">
+                                    <input type="hidden" name="productId" value="@item.ProductId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end"><strong>Обща сума:</strong></td>
+                        <td><strong>@Model.CartTotal.ToString("N2") лв.</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-page="/Products/Index" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Продължи с пазаруването
+            </a>
+            <a asp-page="/Checkout/Index" class="btn btn-primary">
+                <i class="fas fa-credit-card"></i> Приключи поръчката
+            </a>
+        </div>
+    }
+</div> 

@@ -1,0 +1,96 @@
+@page
+@model CandyShopp.Pages.Orders.DetailsModel
+@using CandyShopp.Models
+@{
+    ViewData["Title"] = "Детайли на поръчка";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>@ViewData["Title"] #@Model.Order.Id</h1>
+        <a asp-page="./Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Назад към списъка
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Информация за поръчката</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Статус:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-@(Model.Order.Status switch {
+                                OrderStatus.Pending => "warning",
+                                OrderStatus.Processing => "info",
+                                OrderStatus.Shipped => "primary",
+                                OrderStatus.Delivered => "success",
+                                OrderStatus.Cancelled => "danger",
+                                _ => "secondary"
+                            })">
+                                @Model.Order.Status
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">Дата:</dt>
+                        <dd class="col-sm-8">@Model.Order.OrderDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4">Обща сума:</dt>
+                        <dd class="col-sm-8">@Model.Order.TotalAmount.ToString("N2") лв.</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Информация за доставка</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Име:</dt>
+                        <dd class="col-sm-8">@Model.Order.CustomerName</dd>
+
+                        <dt class="col-sm-4">Телефон:</dt>
+                        <dd class="col-sm-8">@Model.Order.PhoneNumber</dd>
+
+                        <dt class="col-sm-4">Адрес:</dt>
+                        <dd class="col-sm-8">@Model.Order.DeliveryAddress</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Order.Note))
+                        {
+                            <dt class="col-sm-4">Бележка:</dt>
+                            <dd class="col-sm-8">@Model.Order.Note</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Поръчани продукти</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        @foreach (var item in Model.Order.OrderItems)
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-0">@(item.Product?.Name ?? "")</h6>
+                                        <small class="text-muted">@item.Quantity x @item.Price.ToString("N2") лв.</small>
+                                    </div>
+                                    <span>@((item.Price * item.Quantity).ToString("N2")) лв.</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

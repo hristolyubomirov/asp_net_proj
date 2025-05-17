@@ -1,0 +1,90 @@
+@page
+@model CandyShopp.Pages.Checkout.IndexModel
+@{
+    ViewData["Title"] = "Приключване на поръчката";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    @if (!Model.CartItems.Any())
+    {
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i> Вашата количка е празна.
+            <a asp-page="/Products/Index" class="alert-link">Разгледайте нашите продукти</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Данни за доставка</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="mb-3">
+                                <label asp-for="Input.CustomerName" class="form-label">Име и фамилия</label>
+                                <input asp-for="Input.CustomerName" class="form-control" required />
+                                <span asp-validation-for="Input.CustomerName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.PhoneNumber" class="form-label">Телефон</label>
+                                <input asp-for="Input.PhoneNumber" class="form-control" required />
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.DeliveryAddress" class="form-label">Адрес за доставка</label>
+                                <textarea asp-for="Input.DeliveryAddress" class="form-control" rows="3" required></textarea>
+                                <span asp-validation-for="Input.DeliveryAddress" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.Note" class="form-label">Бележка към поръчката</label>
+                                <textarea asp-for="Input.Note" class="form-control" rows="2"></textarea>
+                                <span asp-validation-for="Input.Note" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check"></i> Потвърди поръчката
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Обобщение на поръчката</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush mb-3">
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-0">@item.Product.Name</h6>
+                                        <small class="text-muted">@item.Quantity x @item.Product.Price.ToString("N2") лв.</small>
+                                    </div>
+                                    <span>@item.TotalPrice.ToString("N2") лв.</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Обща сума:</span>
+                            <strong>@Model.CartTotal.ToString("N2") лв.</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

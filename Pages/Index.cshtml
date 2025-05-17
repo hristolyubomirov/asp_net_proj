@@ -1,0 +1,76 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="hero-section text-center py-5 mb-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold text-primary mb-4">
+            <i class="fas fa-candy-cane"></i> Добре дошли в CandyShopp
+        </h1>
+        <p class="lead mb-4">Открийте света на сладките удоволствия с нашите избрани бонбони и сладкиши</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="/Products/Index" class="btn btn-primary btn-lg">
+                <i class="fas fa-box"></i> Разгледай продуктите
+            </a>
+            @if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                <a href="/Identity/Account/Register" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-user-plus"></i> Регистрирай се
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title h5">Бърза доставка</h3>
+                    <p class="card-text">Доставяме вашите сладкиши бързо и надеждно до вашата врата.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title h5">Качествени продукти</h3>
+                    <p class="card-text">Избираме само най-добрите съставки за нашите сладкиши.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title h5">Специални оферти</h3>
+                    <p class="card-text">Регистрирайте се за специални промоции и отстъпки.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .card {
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .btn-lg {
+        padding: 1rem 2rem;
+    }
+</style>
